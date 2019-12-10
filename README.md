@@ -4,12 +4,12 @@ Originally forked from [sethvargo/vault-init](https://github.com/sethvargo/vault
 
 The `vault-init` service automates the process of [initializing](https://www.vaultproject.io/docs/commands/operator/init.html) HashiCorp [Vault](https://www.vaultproject.io/) instances running on [Amazon Web Services](https://aws.amazon.com/). Unlike the original this service does not offer unsealing. The service should be used alongside Vault [auto-unseal](https://www.vaultproject.io/docs/concepts/seal.html#auto-unseal).
 
-After `vault-init` initializes a Vault server it stores recovery keys and root token to user defined [AWS Secrets Manager](https://aws.amazon.com/secrets-manager/) Secrets.
-The Secrets can be encrypted using [AWS KMS Key](https://aws.amazon.com/kms). See [How AWS Secrets Manager Uses AWS KMS](https://docs.aws.amazon.com/kms/latest/developerguide/services-secrets-manager.html) for more information. When using this feature make sure the service has permission to the Key.
+After `vault-init` initializes a Vault server it stores recovery keys and root token to user defined [AWS Secrets Manager](https://aws.amazon.com/secrets-manager/) secrets.
+The secrets can be encrypted using [AWS KMS Key](https://aws.amazon.com/kms). See [How AWS Secrets Manager Uses AWS KMS](https://docs.aws.amazon.com/kms/latest/developerguide/services-secrets-manager.html) for more information. When using this feature make sure the service has permission to the KMS Key.
 
-The original service stores the keys and token in a Bucket. The decision to store them in Secrets Manager was made, because Terraforms data source [aws_s3_bucket_object](https://www.terraform.io/docs/providers/aws/d/s3_bucket_object.html) can only use files that are plain text.
+The original service stores the keys and token in a Bucket. The decision to store them in Secrets Manager was made, because Terraforms data source [aws_s3_bucket_object](https://www.terraform.io/docs/providers/aws/d/s3_bucket_object.html) can only use files that are plain text and the files where encrypted.
 
-However using the data source [aws_secretsmanager_secret](https://www.terraform.io/docs/providers/aws/d/secretsmanager_secret.html) it is possible retrieve the root token, configure Terraforms [Vault Provider](https://www.terraform.io/docs/providers/vault/index.html) and create modules to configure Vault.
+However using the data source [aws_secretsmanager_secret](https://www.terraform.io/docs/providers/aws/d/secretsmanager_secret.html) it is possible retrieve the root token, configure Terraforms [Vault Provider](https://www.terraform.io/docs/providers/vault/index.html) and to configure Vault with Terraform.
 
 ## Usage
 
