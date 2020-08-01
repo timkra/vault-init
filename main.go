@@ -193,15 +193,16 @@ func initialize() {
 	}
 
 	log.Println("Storing root token and recovery keys in Secrets Manager...")
+	sess := session.Must(session.NewSession())
 
-	sess := secretsmanager.New(session.New())
+	svc := secretsmanager.New(sess)
 
 	rootTokenInput := &secretsmanager.PutSecretValueInput{
 		SecretId:     aws.String(rootTokenSecretID),
 		SecretString: aws.String(string(RootTokenSecretString)),
 	}
 
-	_, err = sess.PutSecretValue(rootTokenInput)
+	_, err = svc.PutSecretValue(rootTokenInput)
 	if err != nil {
 		log.Fatal(err)
 		return
@@ -220,7 +221,7 @@ func initialize() {
 		SecretString: aws.String(string(jsonRecoveryKeys)),
 	}
 
-	_, err = sess.PutSecretValue(recoveryKeysInput)
+	_, err = svc.PutSecretValue(recoveryKeysInput)
 	if err != nil {
 		log.Fatal(err)
 		return
