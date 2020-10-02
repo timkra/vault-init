@@ -123,6 +123,8 @@ func main() {
 			log.Println("Vault is not initialized.")
 			log.Println("Initializing...")
 			initialize()
+		case 503:
+			log.Println("Vault is sealed.")
 		default:
 			log.Printf("Vault is in an unknown state. Status code: %d", response.StatusCode)
 		}
